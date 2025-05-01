@@ -93,4 +93,10 @@ class Menu(customtkinter.CTkFrame):
             state="disabled",
         )
 
-        self.start_button.grid(row=3, column=2)
+        selected_grid_info = customtkinter.CTkLabel(
+            self,
+            text=f"Grid Size {self.number}x{self.number}",
+            font=("Helvetica Neue", 22)
+        )
+        selected_grid_info.grid(row=3, column=2)
+        self.start_button.grid(row=4, column=2)
