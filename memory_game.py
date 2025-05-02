@@ -19,7 +19,7 @@ class MemoryGame(customtkinter.CTkFrame):
         num_pairs = total_cards // 2
 
         self.symbols = [str(i) for i in range(1, num_pairs + 1)] * 2
-        random.shuffle(self.symbols)
+        # random.shuffle(self.symbols)
 
         self.default_image = customtkinter.CTkImage(Image.open("./images/question-sign.png"), size=(50, 50))
 
@@ -37,21 +37,19 @@ class MemoryGame(customtkinter.CTkFrame):
             row_buttons = []
             for col in range(grid_size):
                 if grid_size == 5 and row == 2 and col == 2:
-                    empty_space = customtkinter.CTkLabel(self, text="")
-                    empty_space.grid(
-                        row=row + 1,
-                        column=col,
-                        padx=5,
-                        pady=5,
-                        sticky="nsew"
-                    )
-                    row_buttons.append(None)  # Add None to maintain grid structure
+                    row_buttons.append(None)
                     continue
 
                 symbol = self.symbols[symbol_index]
                 symbol_index += 1
 
-                button = customtkinter.CTkButton(self, image=self.default_image, text="")
+                button = customtkinter.CTkButton(
+                    self,
+                    image=self.default_image,
+                    text="",
+                    fg_color="#8FA4AD",
+                    hover_color="#546E7A",
+                )
                 button.configure(command=lambda b=button, s=symbol: self.reveal(b, s))
                 button.grid(
                     row=row + 1,
@@ -80,17 +78,19 @@ class MemoryGame(customtkinter.CTkFrame):
             "heart.png",
             "3d-house.png",
             "cloud.png",
-            "heart.png",  # Duplicated for demonstration, should use unique images
-            "3d-house.png",
-            "cloud.png",
-            "sunny.png",
-            "star.png",
-            "crescent-moon.png",
-            "tree.png",
-            "transport.png",
-            "heart.png",
-            "3d-house.png",
+            "wave.png",
+            "mountain.png",
+            "compass.png",
+            "earth.png",
+            "fire.png",
+            "clock.png",
+            "bridge.png",
+            "anchor.png",
+            "road.png",
+            "telescope.png",
         ]
+
+        random.shuffle(image_paths)
 
         mapping = {}
         for i in range(1, len(image_paths) + 1):
