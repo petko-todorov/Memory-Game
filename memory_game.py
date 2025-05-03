@@ -28,9 +28,12 @@ class MemoryGame(customtkinter.CTkFrame):
         self.back_button = customtkinter.CTkButton(
             self,
             text="Back to Menu",
+            height=50,
+            width=50,
+            hover=False,
             command=self.return_to_menu
         )
-        self.back_button.grid(row=grid_size + 1, column=0, columnspan=grid_size, pady=20)
+        self.back_button.grid(row=0, column=0, pady=20)
 
         symbol_index = 0
         for row in range(grid_size):
@@ -47,12 +50,12 @@ class MemoryGame(customtkinter.CTkFrame):
                     self,
                     image=self.default_image,
                     text="",
-                    fg_color="#8FA4AD",
+                    fg_color="#607179",
                     hover_color="#546E7A",
                 )
                 button.configure(command=lambda b=button, s=symbol: self.reveal(b, s))
                 button.grid(
-                    row=row + 1,
+                    row=row + 2,
                     column=col,
                     padx=5,
                     pady=5,
