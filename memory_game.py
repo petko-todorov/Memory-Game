@@ -33,7 +33,15 @@ class MemoryGame(customtkinter.CTkFrame):
             hover=False,
             command=self.return_to_menu
         )
-        self.back_button.grid(row=0, column=0, pady=20)
+        self.back_button.place(relx=0.01, rely=0.01)
+
+        self.moves = 0
+        self.moves_label = customtkinter.CTkLabel(
+            self,
+            text=f"Moves: {self.moves}",
+            font=("Helvetica Neue", 20)
+        )
+        self.moves_label.place(relx=0.5, rely=0.05, anchor="center")
 
         symbol_index = 0
         for row in range(grid_size):
@@ -124,6 +132,8 @@ class MemoryGame(customtkinter.CTkFrame):
             b2.configure(state="disabled")
 
         self.revealed.clear()
+        self.moves += 1
+        self.moves_label.configure(text=f"Moves: {self.moves}")
 
     def return_to_menu(self):
         for row in self.buttons:
