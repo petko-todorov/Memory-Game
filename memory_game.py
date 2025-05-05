@@ -128,12 +128,21 @@ class MemoryGame(customtkinter.CTkFrame):
             b1.configure(image=self.default_image)
             b2.configure(image=self.default_image)
         else:
+            self.flash(b1, b2)
             b1.configure(state="disabled")
             b2.configure(state="disabled")
 
         self.revealed.clear()
         self.moves += 1
         self.moves_label.configure(text=f"Moves: {self.moves}")
+
+    def flash(self, btn1, btn2, count=0):
+        colors = ["green",  "#607179"]
+        if count < 4:
+            new_color = colors[count % len(colors)]
+            btn1.configure(fg_color=new_color)
+            btn2.configure(fg_color=new_color)
+            btn1.after(200, lambda: self.flash(btn1, btn2, count + 1))
 
     def return_to_menu(self):
         for row in self.buttons:
