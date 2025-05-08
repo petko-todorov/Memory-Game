@@ -1,6 +1,7 @@
 import customtkinter
 from PIL import Image
 import random
+import json
 
 
 class MemoryGame(customtkinter.CTkFrame):
@@ -78,6 +79,8 @@ class MemoryGame(customtkinter.CTkFrame):
         for i in range(grid_size):
             self.grid_columnconfigure(i, weight=1)
 
+        self.matched_pairs = 0
+
     @staticmethod
     def load_image_mapping():
         image_paths = [
@@ -131,18 +134,28 @@ class MemoryGame(customtkinter.CTkFrame):
             self.flash(b1, b2)
             b1.configure(state="disabled")
             b2.configure(state="disabled")
+            self.matched_pairs += 1
+            if self.matched_pairs == self.calculate_total_pairs():
+                # TODO: game end
+                pass
 
         self.revealed.clear()
         self.moves += 1
         self.moves_label.configure(text=f"Moves: {self.moves}")
 
     def flash(self, btn1, btn2, count=0):
-        colors = ["green",  "#607179"]
+        colors = ["green", "#607179"]
         if count < 4:
             new_color = colors[count % len(colors)]
             btn1.configure(fg_color=new_color)
             btn2.configure(fg_color=new_color)
             btn1.after(200, lambda: self.flash(btn1, btn2, count + 1))
+
+    def calculate_total_pairs(self):
+        total_cells = self.grid_size * self.grid_size
+        if self.grid_size == 5:
+            total_cells -= 1
+        return total_cells // 2
 
     def return_to_menu(self):
         for row in self.buttons:
