@@ -88,6 +88,8 @@ class MemoryGame(customtkinter.CTkFrame):
         )
         self.best_score_label.place(relx=0.88, rely=0.05, anchor="center")
 
+        self.old_record = self.best_score[f"{grid_size}x{grid_size}"]
+
     @staticmethod
     def load_image_mapping():
         image_paths = [
@@ -219,7 +221,11 @@ class MemoryGame(customtkinter.CTkFrame):
                     height=50,
                 )
 
-                if self.moves < self.best_score[f"{self.grid_size}x{self.grid_size}"]:
+                if self.moves < self.old_record:
+                    record_label.place(relx=0.5, rely=0.64, anchor="center")
+
+                if self.moves == self.old_record:
+                    record_label.configure(text=f"Tied record! {self.moves} moves")
                     record_label.place(relx=0.5, rely=0.64, anchor="center")
 
                 restart_button = customtkinter.CTkButton(
