@@ -80,6 +80,13 @@ class MemoryGame(customtkinter.CTkFrame):
             self.grid_columnconfigure(i, weight=1)
 
         self.matched_pairs = 0
+        self.best_score = json.load(open("highscore.json"))
+        self.best_score_label = customtkinter.CTkLabel(
+            self,
+            text=f"Best moves: {self.best_score[f'{grid_size}x{grid_size}']}",
+            font=("Helvetica Neue", 20)
+        )
+        self.best_score_label.place(relx=0.88, rely=0.05, anchor="center")
 
     @staticmethod
     def load_image_mapping():
@@ -135,13 +142,21 @@ class MemoryGame(customtkinter.CTkFrame):
             b1.configure(state="disabled")
             b2.configure(state="disabled")
             self.matched_pairs += 1
-            if self.matched_pairs == self.calculate_total_pairs():
-                # TODO: game end
-                pass
 
         self.revealed.clear()
         self.moves += 1
         self.moves_label.configure(text=f"Moves: {self.moves}")
+
+        if self.matched_pairs == self.calculate_total_pairs():
+            with open("highscore.json", "w") as f:
+                if self.moves < self.best_score[f"{self.grid_size}x{self.grid_size}"]:
+                    self.best_score[f"{self.grid_size}x{self.grid_size}"] = self.moves
+                    json.dump(self.best_score, indent=4, fp=f)
+                    self.best_score_label.configure(text=f"Best moves: {self.moves}")
+                else:
+                    json.dump(self.best_score, indent=4, fp=f)
+
+            self.after(1000, self.end_game_effect)
 
     def flash(self, btn1, btn2, count=0):
         colors = ["green", "#607179"]
@@ -156,6 +171,46 @@ class MemoryGame(customtkinter.CTkFrame):
         if self.grid_size == 5:
             total_cells -= 1
         return total_cells // 2
+
+    def end_game_effect(self):
+        order = []
+        rows = len(self.buttons)
+        cols = len(self.buttons[0]) if rows > 0 else 0
+        layers = (min(rows, cols) + 1) // 2
+
+        for layer in range(layers):
+            top = layer
+            bottom = rows - 1 - layer
+            left = layer
+            right = cols - 1 - layer
+
+            order.extend((top, c) for c in range(left, right + 1))
+            order.extend((r, right) for r in range(top + 1, bottom + 1))
+            if bottom > top:
+                order.extend((bottom, c) for c in range(right - 1, left - 1, -1))
+            if left < right:
+                order.extend((r, left) for r in range(bottom - 1, top, -1))
+
+        valid_coords = [(r, c) for r in range(rows) for c in range(cols) if self.buttons[r][c] is not None]
+        order = [coord for coord in order if coord in valid_coords]
+
+        def process_spiral(index=0):
+            if index < len(order):
+                r, c = order[index]
+                self.buttons[r][c].configure(fg_color="#6296C0")
+                self.after(100, lambda: process_spiral(index + 1))
+            else:
+                end_game_label = customtkinter.CTkLabel(
+                    self,
+                    text="You did it!",
+                    font=customtkinter.CTkFont(size=60, weight="bold"),
+                    text_color="#91b5d2",
+                    width=500,
+                    height=100
+                )
+                end_game_label.place(relx=0.5, rely=0.5, anchor="center")
+
+        process_spiral()
 
     def return_to_menu(self):
         for row in self.buttons:
