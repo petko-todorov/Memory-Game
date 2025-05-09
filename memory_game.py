@@ -20,7 +20,7 @@ class MemoryGame(customtkinter.CTkFrame):
         num_pairs = total_cards // 2
 
         self.symbols = [str(i) for i in range(1, num_pairs + 1)] * 2
-        # random.shuffle(self.symbols)
+        random.shuffle(self.symbols)
 
         self.default_image = customtkinter.CTkImage(Image.open("./images/question-sign.png"), size=(50, 50))
 
