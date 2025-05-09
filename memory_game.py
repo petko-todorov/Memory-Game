@@ -206,9 +206,32 @@ class MemoryGame(customtkinter.CTkFrame):
                     font=customtkinter.CTkFont(size=60, weight="bold"),
                     text_color="#91b5d2",
                     width=500,
-                    height=100
+                    height=100,
                 )
-                end_game_label.place(relx=0.5, rely=0.5, anchor="center")
+                end_game_label.place(relx=0.5, rely=0.54, anchor="center")
+
+                record_label = customtkinter.CTkLabel(
+                    self,
+                    text=f"New record! {self.moves} moves",
+                    font=customtkinter.CTkFont(size=20, weight="bold"),
+                    text_color="#91b5d2",
+                    width=500,
+                    height=50,
+                )
+
+                if self.moves < self.best_score[f"{self.grid_size}x{self.grid_size}"]:
+                    record_label.place(relx=0.5, rely=0.64, anchor="center")
+
+                restart_button = customtkinter.CTkButton(
+                    self,
+                    text="Restart",
+                    font=customtkinter.CTkFont(size=20, weight="bold"),
+                    height=50,
+                    width=70,
+                    hover=False,
+                    command=lambda: MemoryGame(self.master, self.grid_size)
+                )
+                restart_button.place(relx=0.15, rely=0.01)
 
         process_spiral()
 
