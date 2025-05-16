@@ -4,6 +4,7 @@ A graphical **Memory Matching Game** built with Python and `customtkinter`. Matc
 grid (4x4, 5x5, or 6x6) and try to beat your best score!
 
 ## 📸 Screenshots
+
 <img src="/screenshots/menu.png" alt="img alt" width="300" height="300">
 <img src="/screenshots/middle_game.png" alt="img alt" width="300" height="300">
 <img src="/screenshots/end_game.png" alt="img alt" width="300" height="300">
@@ -40,10 +41,7 @@ python main.py
 
 - The game will open in a 700x700 window where you can select your desired grid size and start playing.
 
-## 🖼️ Adding Your Own Icons
-
-- Add PNG images (50x50 recommended) to the images/ directory. The game randomly maps them to tile symbols each run.s
-- Make sure to keep question-sign.png for the default hidden tile.
+---
 
 ## 🏆 High Score
 
